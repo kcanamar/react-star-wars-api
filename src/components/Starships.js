@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-
+import "./starships.sass"
 
 export default function Starships(_props) {
 
@@ -13,16 +13,15 @@ export default function Starships(_props) {
     useEffect(() => { getStarships() }, [])
     if (starships.length <= 0) {
         return <div>
-            <h1>No Ships</h1>
-            <button onClick={getStarships}>Get Ships</button>
+            <h1>Have you checked the thermal cupllers?</h1>
         </div>
     }
 
     return (
         <div>
-            <h1>Star Wars</h1>
+            <h1 className="title"> Star Wars</h1>
 
-            <div>
+            <div className="ships-container">
                 {starships.map((ship) => {
                     return (
                         <div key={ship.name}>
@@ -32,7 +31,7 @@ export default function Starships(_props) {
                                     <div className="card-content white-text">
                                     <span className="card-title">{ship.name}</span>
                                     <p>Cost: {ship.cost_in_credits}</p>
-                                    <p>Made By --> {ship.manufacturer}</p>
+                                    <p>Made By: {ship.manufacturer}</p>
                                     </div>
                                 </div>
                                 </div>
