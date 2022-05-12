@@ -2,40 +2,31 @@ import { useState, useEffect } from "react"
 import "./starships.sass"
 
 export default function Starships(_props) {
-
-    const [starships, setStarships] = useState([])
-    const getStarships = async () => {
-        const response = await fetch("https://swapi.dev/api/starships/")
+    const apiUrl = "https://swapi.dev/api/starships/"
+    const [starships, setStarships] = useState(null)
+    const getStarships = async (url) => {
+        const response = await fetch(url)
         const json = await response.json()
-        setStarships(json.results)
+        setStarships(json)
     }
 
-    useEffect(() => { getStarships() }, [])
-    if (starships.length <= 0) {
-        return <div>
-            <h1>Have you checked the thermal cupllers?</h1>
-        </div>
-    }
+    useEffect(() => { getStarships(apiUrl) }, [])
 
     return (
         <div>
             <h1 className="title"> Star Wars</h1>
-
+                <div className="links">
+                    {(starships && !starships.previous) ? null : <p onClick={() => getStarships(starships.previous)}>Go Back</p>}
+                    {(starships && !starships.next) ? null : <p onClick={() => getStarships(starships.next)}>Click HereFor More</p>}
+                </div>
             <div className="ships-container">
-                {starships.map((ship) => {
+                {starships && starships.results.map((ship) => {
                     return (
-                        <div key={ship.name}>
-                            <div className="row">
-                                <div className="col s12 m3">
-                                <div className="card blue-grey darken-1">
-                                    <div className="card-content white-text">
-                                    <span className="card-title">{ship.name}</span>
-                                    <p>Cost: {ship.cost_in_credits}</p>
-                                    <p>Made By: {ship.manufacturer}</p>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
+                        <div className="ship" key={ship.name}>
+                            <h5>{ship.name}</h5>
+                            <hr/>
+                            <p>Made By: {ship.manufacturer}</p>
+                            <p>Price: {ship.cost_in_credits}</p>
                       </div>
                     )
                 })}
