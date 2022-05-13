@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import "./starships.sass"
+import Links from "./Links"
 
 export default function Starships(_props) {
     const apiUrl = "https://swapi.dev/api/starships/"
@@ -15,14 +16,11 @@ export default function Starships(_props) {
     return (
         <div>
             <h1 className="title"> Star Wars</h1>
-                <div className="links">
-                    {(starships && !starships.previous) ? null : <p onClick={() => getStarships(starships.previous)}>Go Back</p>}
-                    {(starships && !starships.next) ? null : <p onClick={() => getStarships(starships.next)}>Click HereFor More</p>}
-                </div>
+            {!starships ? null : <Links starships={starships} getStarships={getStarships} />}
             <div className="ships-container">
-                {starships && starships.results.map((ship) => {
+                {starships && starships.results.map((ship, index) => {
                     return (
-                        <div className="ship" key={ship.name}>
+                        <div className="ship" key={index}>
                             <h5>{ship.name}</h5>
                             <hr/>
                             <p>Made By: {ship.manufacturer}</p>
@@ -31,6 +29,7 @@ export default function Starships(_props) {
                     )
                 })}
             </div>
+            
         </div>
     )
 }
